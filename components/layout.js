@@ -3,13 +3,33 @@ import Image from 'next/image';
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const name = 'SA SEOKHYUN';
 export const siteTitle = 'Next.js Sample Website';
 
 export default function Layout({ children, home }) {
+  const [theme, setTheme] = useState(() => 
+  typeof window !== 'undefined' 
+  ? localStorage.getItem('theme') === 'dark' 
+    ? 'dark' 
+    : 'light' 
+  : 'light')
+
+  const handleClick = () => {
+    const theme = localStorage.getItem('theme')
+    if (theme === 'dark') {
+      localStorage.setItem('theme', 'light')
+      setTheme('light')
+    } else {
+      localStorage.setItem('theme', 'dark')
+      setTheme('dark')
+    }
+  }
+
   return (
-    <div className={styles.container}>
+    <div className="bg-pink-50 dark:bg-black text-gray-800 dark:text-gray-200 h-screen">
+      <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -25,6 +45,13 @@ export default function Layout({ children, home }) {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
+      <button className='w-12 px-2' onClick={handleClick}>
+        {theme === 'dark' ? (
+          <img src="/images/light-mode.png" alt="light" />
+        ) : (
+          <img src="/images/dark-mode.png" alt="dark" />
+        )}
+      </button>
       <header className={styles.header}>
         {home ? (
           <>
@@ -68,6 +95,7 @@ export default function Layout({ children, home }) {
           </Link>
         </div>
       )}
+    </div>
     </div>
   );
 }
