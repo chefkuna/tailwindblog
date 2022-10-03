@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const name = 'SA SEOKHYUN';
 export const siteTitle = 'Next.js Sample Website';
@@ -15,6 +15,14 @@ export default function Layout({ children, home }) {
     ? 'dark' 
     : 'light' 
   : 'light')
+
+  useEffect(()=>{
+    if(theme === 'dark') {
+      document.querySelector('body').classList.add('dark')
+    } else {
+      document.querySelector('body').classList.remove('dark')
+    }
+  },[theme])
 
   const handleClick = () => {
     const theme = localStorage.getItem('theme')
